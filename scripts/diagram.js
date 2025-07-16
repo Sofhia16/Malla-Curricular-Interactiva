@@ -1,3 +1,4 @@
+let courses = JSON.parse(localStorage.getItem('courses')) || [];
 document.getElementById('viewDiagram').addEventListener('click', () => {
   const diagram = document.getElementById('diagramContainer');
   const tables = document.getElementById('tablesContainer');

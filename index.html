@@ -26,9 +26,7 @@
       <h2 class="text-xl font-semibold mb-2">📚 Asignaturas</h2>
       <button id="addCourse" class="mb-4 px-4 py-2 bg-pink-500 text-white rounded">Agregar asignatura</button>
       <label>Semestre: 
-        <select id="semesterSelect" class="ml-2 border p-1 rounded">
-          ${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">Semestre ${i + 1}</option>`).join('')}
-        </select>
+        <select id="semesterSelect" class="ml-2 border p-1 rounded"></select>
       </label>
     </div>
 
@@ -37,6 +35,15 @@
 
   <script>
     let courses = [];
+
+    // Crear select de semestres dinámicamente
+    const semesterSelect = document.getElementById('semesterSelect');
+    for (let i = 1; i <= 10; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.textContent = `Semestre ${i}`;
+      semesterSelect.appendChild(option);
+    }
 
     function renderTables() {
       const container = document.getElementById('tablesContainer');
@@ -69,15 +76,15 @@
           <tbody>
             ${semCourses.map((course, index) => `
               <tr>
-                <td class="border p-2"><input type="text" value="${course.name}" data-index="${index}" data-field="name" class="border p-1 w-full rounded"></td>
-                <td class="border p-2"><input type="number" value="${course.credits}" data-index="${index}" data-field="credits" class="border p-1 w-16 rounded"></td>
-                <td class="border p-2"><input type="text" value="${course.relation}" data-index="${index}" data-field="relation" class="border p-1 w-full rounded"></td>
+                <td class="border p-2"><input type="text" value="${course.name}" data-index="${courses.indexOf(course)}" data-field="name" class="border p-1 w-full rounded"></td>
+                <td class="border p-2"><input type="number" value="${course.credits}" data-index="${courses.indexOf(course)}" data-field="credits" class="border p-1 w-16 rounded"></td>
+                <td class="border p-2"><input type="text" value="${course.relation}" data-index="${courses.indexOf(course)}" data-field="relation" class="border p-1 w-full rounded"></td>
                 <td class="border p-2">
-                  <select data-index="${index}" class="moveSemester border p-1 rounded">
+                  <select data-index="${courses.indexOf(course)}" class="moveSemester border p-1 rounded">
                     ${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}" ${course.semester == (i + 1) ? 'selected' : ''}>${i + 1}</option>`).join('')}
                   </select>
                 </td>
-                <td class="border p-2"><button data-index="${index}" class="deleteCourse bg-red-500 text-white px-2 py-1 rounded">Eliminar</button></td>
+                <td class="border p-2"><button data-index="${courses.indexOf(course)}" class="deleteCourse bg-red-500 text-white px-2 py-1 rounded">Eliminar</button></td>
               </tr>
             `).join('')}
           </tbody>
@@ -128,3 +135,4 @@
   </script>
 </body>
 </html>
+

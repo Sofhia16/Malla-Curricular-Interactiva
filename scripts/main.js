@@ -41,7 +41,7 @@ function renderTables() {
         </tr>
       </thead>
       <tbody>
-        ${semCourses.map((course, index) => `
+        ${semCourses.map(course => `
           <tr>
             <td class="border p-2"><input type="text" value="${course.name}" data-index="${courses.indexOf(course)}" data-field="name" class="border p-1 w-full rounded"></td>
             <td class="border p-2"><input type="number" value="${course.credits}" data-index="${courses.indexOf(course)}" data-field="credits" class="border p-1 w-16 rounded"></td>
@@ -58,7 +58,7 @@ function renderTables() {
     `;
     tableDiv.appendChild(table);
 
-    // Mostrar total de créditos
+    // Total créditos
     const totalCredits = semCourses.reduce((sum, c) => sum + parseInt(c.credits || 0), 0);
     const creditsDiv = document.createElement('div');
     creditsDiv.className = "mt-2 font-semibold";
@@ -100,13 +100,6 @@ document.getElementById('addCourse').addEventListener('click', () => {
   courses.push({ name: 'Nueva asignatura', credits: 0, relation: '', semester: semester });
   saveCourses();
   renderTables();
-});
-
-document.getElementById('applyStyle').addEventListener('click', () => {
-  const bgColor = document.getElementById('bgColor').value;
-  const textColor = document.getElementById('textColor').value;
-  document.body.style.backgroundColor = bgColor;
-  document.body.style.color = textColor;
 });
 
 renderTables();

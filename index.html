@@ -29,7 +29,9 @@
       <h2 class="text-xl font-semibold mb-2">📚 Asignaturas</h2>
       <button id="addCourse" class="mb-4 px-4 py-2 bg-pink-500 text-white rounded">Agregar asignatura</button>
       <label>Semestre: 
-        <select id="semesterSelect" class="ml-2 border p-1 rounded"></select>
+        <select id="semesterSelect" class="ml-2 border p-1 rounded">
+          ${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">Semestre ${i + 1}</option>`).join('')}
+        </select>
       </label>
     </div>
 
@@ -39,15 +41,6 @@
 
   <script>
     let courses = [];
-
-    // Generar opciones del select de semestres dinámicamente
-    const semesterSelect = document.getElementById('semesterSelect');
-    for (let i = 1; i <= 10; i++) {
-      const option = document.createElement('option');
-      option.value = i;
-      option.textContent = `Semestre ${i}`;
-      semesterSelect.appendChild(option);
-    }
 
     function renderTables() {
       const container = document.getElementById('tablesContainer');

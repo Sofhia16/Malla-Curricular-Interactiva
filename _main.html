@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Malla Curricular Interactiva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografía girlie -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Pacifico', cursive;
+    }
+  </style>
+</head>
+<body class="bg-pink-50 text-pink-900">
+  <div class="container mx-auto p-6">
+    <h1 class="text-4xl font-bold mb-4 text-center">✨ Malla Curricular ✨</h1>
+    
+    <!-- Configuración -->
+    <div class="mb-6 p-4 bg-white rounded shadow">
+      <h2 class="text-xl font-semibold mb-2">🎨 Configuración de estilo</h2>
+      <label class="block mb-2">Color de fondo: <input type="color" id="bgColor" value="#ffe4e6" class="ml-2"></label>
+      <label class="block mb-2">Color de texto: <input type="color" id="textColor" value="#be185d" class="ml-2"></label>
+      <button id="applyStyle" class="mt-2 px-4 py-2 bg-pink-500 text-white rounded">Aplicar</button>
+    </div>
+
+    <!-- Asignaturas -->
+    <div class="mb-6 p-4 bg-white rounded shadow">
+      <h2 class="text-xl font-semibold mb-2">📚 Asignaturas</h2>
+      <button id="addCourse" class="mb-4 px-4 py-2 bg-pink-500 text-white rounded">Agregar asignatura</button>
+      <label>Semestre: 
+        <select id="semesterSelect" class="ml-2 border p-1 rounded"></select>
+      </label>
+    </div>
+
+    <!-- Contenedor de tablas -->
+    <div id="tablesContainer"></div>
+  </div>
+
+  <script>
+    let courses = [];
+
+    // Generar opciones del select de semestres dinámicamente
+    const semesterSelect = document.getElementById('semesterSelect');
+    for (let i = 1; i <= 10; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.textContent = `Semestre ${i}`;
+      semesterSelect.appendChild(option);
+    }
+
+    function renderTables() {
+      const container = document.getElementById('tablesContainer');
+      container.innerHTML = '';
+
+      for (let sem = 1; sem <= 10; sem++) {
+        const semCourses = courses.filter(c => c.semester == sem);
+        if (semCourses.length === 0) continue;
+
+        const tableDiv = document.createElement('div');
+        tableDiv.className = "mb-8 bg-pink-100 p-4 rounded shadow";
+
+        const title = document.createElement('h3');
+        title.className = "text-2xl mb-2";
+        title.innerText = `💖 Semestre ${sem}`;
+        tableDiv.appendChild(title);
+
+        const table = document.createElement('table');
+        table.className = "w-full text-left border border-pink-300";
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th class="border p-2">Nombre</th>
+              <th class="border p-2">Créditos</th>
+              <th class="border p-2">Prerrequisitos</th>
+              <th class="border p-2">Mover a</th>
+              <th class="border p-2">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${semCourses.map((course, index) => `
+              <tr>
+                <td class="border p-2"><input type="text" value="${course.name}" data-index="${index}" data-field="name" class="border p-1 w-full rounded"></td>
+                <td class="border p-2"><input type="number" value="${course.credits}" data-index="${index}" data-field="credits" class="border p-1 w-16 rounded"></td>
+                <td class="border p-2"><input type="text" value="${course.relation}" data-index="${index}" data-field="relation" class="border p-1 w-full rounded"></td>
+                <td class="border p-2">
+                  <select data-index="${index}" class="moveSemester border p-1 rounded">
+                    ${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}" ${course.semester == (i + 1) ? 'selected' : ''}>${i + 1}</option>`).join('')}
+                  </select>
+                </td>
+                <td class="border p-2"><button data-index="${index}" class="deleteCourse bg-red-500 text-white px-2 py-1 rounded">Eliminar</button></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+        tableDiv.appendChild(table);
+        container.appendChild(tableDiv);
+      }
+
+      document.querySelectorAll('input[data-field]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          const field = e.target.getAttribute('data-field');
+          courses[idx][field] = e.target.value;
+        });
+      });
+
+      document.querySelectorAll('.deleteCourse').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          courses.splice(idx, 1);
+          renderTables();
+        });
+      });
+
+      document.querySelectorAll('.moveSemester').forEach(select => {
+        select.addEventListener('change', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          courses[idx].semester = parseInt(e.target.value);
+          renderTables();
+        });
+      });
+    }
+
+    document.getElementById('addCourse').addEventListener('click', () => {
+      const semester = document.getElementById('semesterSelect').value;
+      courses.push({ name: 'Nueva asignatura', credits: 0, relation: '', semester: semester });
+      renderTables();
+    });
+
+    document.getElementById('applyStyle').addEventListener('click', () => {
+      const bgColor = document.getElementById('bgColor').value;
+      const textColor = document.getElementById('textColor').value;
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.color = textColor;
+    });
+
+    renderTables();
+  </script>
+</body>
+</html>

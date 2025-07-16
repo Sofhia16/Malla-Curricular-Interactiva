@@ -12,6 +12,7 @@
   </style>
 </head>
 <body class="bg-pink-50 text-pink-900">
+  
   <div class="container mx-auto p-6">
     <h1 class="text-4xl font-bold mb-4 text-center">✨ Malla Curricular ✨</h1>
     
@@ -23,12 +24,14 @@
     </div>
 
     <div class="mb-6 p-4 bg-white rounded shadow">
-      <h2 class="text-xl font-semibold mb-2">📚 Asignaturas</h2>
-      <button id="addCourse" class="mb-4 px-4 py-2 bg-pink-500 text-white rounded">Agregar asignatura</button>
-      <label>Semestre: 
-        <select id="semesterSelect" class="ml-2 border p-1 rounded"></select>
-      </label>
-    </div>
+  <h2 class="text-xl font-semibold mb-2">📚 Asignaturas</h2>
+  <button id="addCourse" class="mb-2 px-4 py-2 bg-pink-500 text-white rounded">Agregar asignatura</button>
+  <label for="semesterSelect"> Semestre:</label>
+  <select id="semesterSelect" class="ml-2 border p-1 rounded">
+    <!-- Opciones se llenan con JS -->
+  </select>
+</div>
+
 
     <div id="tablesContainer"></div>
   </div>

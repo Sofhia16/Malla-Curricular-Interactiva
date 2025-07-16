@@ -100,12 +100,11 @@
         container.appendChild(tableDiv);
       }
 
-      // Event listeners para inputs
-      document.querySelectorAll('input[data-field]').forEach(input => {
-        input.addEventListener('input', (e) => {
+      // Listeners para eliminar y prerrequisito
+      document.querySelectorAll('.deleteCourse').forEach(btn => {
+        btn.addEventListener('click', (e) => {
           const idx = e.target.getAttribute('data-index');
-          const field = e.target.getAttribute('data-field');
-          courses[idx][field] = e.target.value;
+          courses.splice(idx, 1);
           renderTables();
         });
       });
@@ -114,15 +113,15 @@
         select.addEventListener('change', (e) => {
           const idx = e.target.getAttribute('data-index');
           courses[idx].relation = e.target.value;
-          renderTables();
         });
       });
 
-      document.querySelectorAll('.deleteCourse').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+      // Listeners para inputs (sin re-render)
+      document.querySelectorAll('input[data-field]').forEach(input => {
+        input.addEventListener('input', (e) => {
           const idx = e.target.getAttribute('data-index');
-          courses.splice(idx, 1);
-          renderTables();
+          const field = e.target.getAttribute('data-field');
+          courses[idx][field] = e.target.value;
         });
       });
     }
@@ -144,3 +143,4 @@
   </script>
 </body>
 </html>
+

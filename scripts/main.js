@@ -33,13 +33,15 @@ function renderTables() {
     table.className = "w-full text-left border border-pink-300";
     table.innerHTML = `
       <thead>
-        <tr>
-          <th class="border p-2">Nombre</th>
-          <th class="border p-2">Créditos</th>
-          <th class="border p-2">Prerrequisitos</th>
-          <th class="border p-2">Acciones</th>
-        </tr>
-      </thead>
+  <tr>
+    <th class="border p-2">Nombre</th>
+    <th class="border p-2">Créditos</th>
+    <th class="border p-2">Prerrequisitos</th>
+    <th class="border p-2">Nota definitiva</th>
+    <th class="border p-2">Acciones</th>
+  </tr>
+</thead>
+
       <tbody>
   ${semCourses.map(course => `
     <tr>
@@ -101,7 +103,7 @@ function renderTables() {
 
 document.getElementById('addCourse').addEventListener('click', () => {
   const semester = document.getElementById('semesterSelect').value;
-  courses.push({ name: 'Nueva asignatura', credits: 0, relation: '', semester: semester });
+  courses.push({ name: 'Nueva asignatura', credits: 0, relation: '', semester: semester, grade: '' });
   saveCourses();
   renderTables();
 });

@@ -54,8 +54,12 @@ function renderTables() {
         </select>
       </td>
       <td class="border p-2">
-        <input type="number" step="0.1" min="0" max="5" value="${course.grade || ''}" data-index="${courses.indexOf(course)}" data-field="grade" class="border p-1 w-20 rounded">
-      </td>
+        <input type="number" step="0.1" min="0" max="5" 
+  value="${course.grade || ''}" 
+  data-index="${courses.indexOf(course)}" 
+  data-field="grade" 
+  class="border p-1 w-20 rounded text-center bg-white" />
+</td>
       <td class="border p-2"><button data-index="${courses.indexOf(course)}" class="deleteCourse bg-red-500 text-white px-2 py-1 rounded">Eliminar</button></td>
     </tr>
   `).join('')}

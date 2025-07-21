@@ -41,20 +41,24 @@ function renderTables() {
         </tr>
       </thead>
       <tbody>
-        ${semCourses.map(course => `
-          <tr>
-            <td class="border p-2"><input type="text" value="${course.name}" data-index="${courses.indexOf(course)}" data-field="name" class="border p-1 w-full rounded"></td>
-            <td class="border p-2"><input type="number" value="${course.credits}" data-index="${courses.indexOf(course)}" data-field="credits" class="border p-1 w-16 rounded"></td>
-            <td class="border p-2">
-              <select data-index="${courses.indexOf(course)}" data-field="relation" class="border p-1 rounded w-full">
-                <option value="">Sin prerrequisito</option>
-                ${courses.map(c => `<option value="${c.name}" ${c.name === course.relation ? 'selected' : ''}>${c.name}</option>`).join('')}
-              </select>
-            </td>
-            <td class="border p-2"><button data-index="${courses.indexOf(course)}" class="deleteCourse bg-red-500 text-white px-2 py-1 rounded">Eliminar</button></td>
-          </tr>
-        `).join('')}
-      </tbody>
+  ${semCourses.map(course => `
+    <tr>
+      <td class="border p-2"><input type="text" value="${course.name}" data-index="${courses.indexOf(course)}" data-field="name" class="border p-1 w-full rounded"></td>
+      <td class="border p-2"><input type="number" value="${course.credits}" data-index="${courses.indexOf(course)}" data-field="credits" class="border p-1 w-16 rounded"></td>
+      <td class="border p-2">
+        <select data-index="${courses.indexOf(course)}" data-field="relation" class="border p-1 rounded w-full">
+          <option value="">Sin prerrequisito</option>
+          ${courses.map(c => `<option value="${c.name}" ${c.name === course.relation ? 'selected' : ''}>${c.name}</option>`).join('')}
+        </select>
+      </td>
+      <td class="border p-2">
+        <input type="number" step="0.1" min="0" max="5" value="${course.grade || ''}" data-index="${courses.indexOf(course)}" data-field="grade" class="border p-1 w-20 rounded">
+      </td>
+      <td class="border p-2"><button data-index="${courses.indexOf(course)}" class="deleteCourse bg-red-500 text-white px-2 py-1 rounded">Eliminar</button></td>
+    </tr>
+  `).join('')}
+</tbody>
+
     `;
     tableDiv.appendChild(table);
 
@@ -101,5 +105,25 @@ document.getElementById('addCourse').addEventListener('click', () => {
   saveCourses();
   renderTables();
 });
+// Asegurar que cada curso tenga la propiedad "grade"
+const fixCoursesGrades = () => {
+  let courses = JSON.parse(localStorage.getItem('courses')) || [];
+  let updated = false;
+
+  courses = courses.map(course => {
+    if (!('grade' in course)) {
+      course.grade = ''; // vacío al inicio
+      updated = true;
+    }
+    return course;
+  });
+
+  if (updated) {
+    localStorage.setItem('courses', JSON.stringify(courses));
+  }
+};
+
+// Ejecutar al inicio
+fixCoursesGrades();
 
 renderTables();

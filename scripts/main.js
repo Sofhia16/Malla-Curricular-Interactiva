@@ -1,5 +1,10 @@
-let courses = JSON.parse(localStorage.getItem('courses')) || [];
-
+courses = courses.map(course => {
+  if (!('grade' in course)) {
+    course.grade = '';
+    updated = true;
+  }
+  return course;
+});
 // Crear select de semestres
 const semesterSelect = document.getElementById('semesterSelect');
 for (let i = 1; i <= 10; i++) {
@@ -69,7 +74,7 @@ function renderTables() {
     tableDiv.appendChild(table);
 
     // Total créditos
-    const totalCredits = semCourses.reduce((sum, c) => sum + parseInt(c.credits || 0), 0);
+   const totalCredits = semCourses.reduce((sum, c) => sum + (parseInt(c.credits) || 0), 0);
     const creditsDiv = document.createElement('div');
     creditsDiv.className = "mt-2 font-semibold";
     creditsDiv.innerText = `Total de créditos: ${totalCredits}`;
